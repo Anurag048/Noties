@@ -1,4 +1,4 @@
-const API_BASE = 'http://192.168.1.210:5050/api';
+const API_BASE = process.env.REACT_APP_API_URL;
 
 export const getNotes = async (token) =>{
     const response = await fetch(`${API_BASE}/notes`, {

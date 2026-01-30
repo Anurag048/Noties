@@ -24,7 +24,7 @@ export default function Login(){
             return showErrorToast("All fields are required")
         }
         try {
-            const url = "http://192.168.1.210:5050/auth/login";
+            const url = `${process.env.REACT_APP_API_URL}/auth/login`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
