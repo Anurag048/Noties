@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "../css/notes.css";
 import { useNavigate } from "react-router-dom";
 import NoteContent from "../components/NoteContent.js";
 import { getNotes, createNote, updateNote, deleteNote } from "../services/noteService.js";
 import {ToastContainer} from 'react-toastify';
-import { showErrorToast, showSuccessToast } from '../UItils';
+import { showErrorToast} from '../UItils';
 
 export default function Notes() {
     const [notes, setNotes] = useState([]);
@@ -17,11 +17,9 @@ export default function Notes() {
     const navigate = useNavigate();
 
     // Fetch notes on component mount
-    useEffect(() => {
-        fetchNotes();
-    }, []);
+    
 
-    const fetchNotes = async () => {
+    const fetchNotes = useCallback(async () => {
         try {
             setLoading(true);
             setError(null);
@@ -36,7 +34,11 @@ export default function Notes() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [token]);
+
+    useEffect(() => {
+         fetchNotes();
+    }, [fetchNotes]);
 
     const handleCreateNote = async () => {
         if (!newTitle.trim() || !newContent.trim()) {
