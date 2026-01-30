@@ -21,7 +21,7 @@ const { json } = bodyParser;
 
 app.use(json());
 app.use(cors({
-  origin: "https://noties-ten.vercel.app/",
+  origin: 'https://noties-ten.vercel.app',
   credentials: true
 }));
 app.use('/auth', AuthRoutes);
