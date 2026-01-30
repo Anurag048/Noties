@@ -20,10 +20,26 @@ const app = express();
 const { json } = bodyParser;
 
 app.use(json());
+
+// Frontend origin - set via env var in Render (e.g. FRONTEND_URL=https://your-vercel-app.vercel.app)
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://noties-ten.vercel.app';
+
 app.use(cors({
-  origin: 'https://noties-ten.vercel.app',
-  credentials: true
+  origin: FRONTEND_URL,
+  credentials: true,
+  // Explicitly allow Authorization header for Bearer token
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
+
+// Helpful debug log (only in non-production) to troubleshoot missing Authorization header issues
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('req.headers.authorization:', req.headers.authorization);
+  }
+  next();
+});
+
 app.use('/auth', AuthRoutes);
 app.use('/api', NotesRoutes);
 
